@@ -38,7 +38,10 @@ namespace ThreadsHomeWork
         }
         public void Delete(int id)
         {
-            for(int i =0; i < Program.clients.Count;i++) if(id == Program.clients[i].Id) Program.clients.RemoveAt(i);   
+            for(int i =0; i < Program.clients.Count;i++) if(id == Program.clients[i].Id) Program.clients.RemoveAt(i);
+            Console.ForegroundColor = ConsoleColor.Red;   
+            Console.WriteLine($"Успешно удален клиент {id}");
+            Console.ForegroundColor = ConsoleColor.White;
         }
     }
     class Program
@@ -94,40 +97,44 @@ namespace ThreadsHomeWork
                         Thread.Sleep(1000);
                     }
                     break;
-                    c
+                    case 4:
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                        Console.WriteLine("Select All: ");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Thread newSelectThread = new Thread(new ThreadStart(() => {client.Select();}));
+                        newSelectThread.Start();
+                        Thread.Sleep(1000);
+                    }
+                    break;
+                    case 5:
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                        Console.WriteLine("Delete: ");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Write("Введите Id: "); int Id = Convert.ToInt32(Console.ReadLine());
+                        Thread newDeleteThread = new Thread(new ThreadStart(()=>{client.Delete(Id);}));
+                        newDeleteThread.Start();
+                        Thread.Sleep(1000);
+                    }
+                    break;
+                    case 0:
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;   
+                        Console.WriteLine("По вашей команде будет осуществлен выход из программы!");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        command = 0;
+                    }
+                    break;
+                    default:
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;   
+                        Console.WriteLine("Вы ввели неправильный символ, повторите команду!");
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                    break;
                 }
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
-            /*/Select by Id
-            Console.Write("Введите Id: "); int id1 = Convert.ToInt32(Console.ReadLine());
-            Thread newSelectByIdThread = new Thread(new ThreadStart(() => {client.SelectById(id1);}));
-            newSelectByIdThread.Start();
-            id++;
-            Console.Write("Введите Имя: "); string name1 = Console.ReadLine();
-            Console.Write("Введите возраст: "); int.TryParse(Console.ReadLine(), out int age1);
-            Console.Write("Введите баланс: "); decimal.TryParse(Console.ReadLine(), out decimal balance1);
-            Thread newInsertThread1 = new Thread(new ThreadStart(() => {client.Insert(id, name1, age1, balance1); }));
-            newInsertThread1.Start();
-            
-            Console.Write("Введите Id: "); int idf = Convert.ToInt32(Console.ReadLine());
-            Thread newDeleteThread = new Thread(new ThreadStart(()=>{client.Delete(idf); }));
-            Thread newSelectThread = new Thread(new ThreadStart(() => {client.Select();}));
-            newSelectThread.Start();*/
-
         }
     }
 }
