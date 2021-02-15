@@ -26,6 +26,24 @@ namespace ThreadsHomeWork
         {
             for (int i = 0; i < Program.clients.Count; i++) if (id == Program.clients[i].Id) Program.clients[i].Balance = balance; 
         }
+        public void SelectById(int id)
+        {
+            for (int i = 0; i < Program.clients.Count; i++)
+            {
+                if (id == Program.clients[i].Id)
+                {
+                    Console.WriteLine(Program.clients[i].Id);
+                    Console.WriteLine(Program.clients[i].Name);
+                    Console.WriteLine(Program.clients[i].Age);
+                    Console.WriteLine(Program.clients[i].Balance); 
+                }
+            }
+        }
+        public void Select()
+        {
+            for (int i = 0; i < Program.clients.Count; i++) Console.WriteLine($"{Program.clients[i].Id},\t {Program.clients[i].Name},\t {Program.clients[i].Age},\t {Program.clients[i].Balance}");
+                
+        }
     }
     class Program
     {
@@ -45,11 +63,24 @@ namespace ThreadsHomeWork
             Console.Write("Введите баланс: "); decimal.TryParse(Console.ReadLine(), out decimal balance);
             Thread newInsertThread = new Thread(new ThreadStart(() => {client.Insert(id, name, age, balance); }));
             newInsertThread.Start();
+            //Update
             Console.Write("Введите Id"); int idd = Convert.ToInt32(Console.ReadLine());
             Console.Write("Введите баланс: ");  decimal ballance = Convert.ToDecimal(Console.ReadLine());
             Thread newUpdateThread = new Thread(new ThreadStart(() => {client.Update(idd, ballance); }));
             newUpdateThread.Start();
-            
+            //Select by Id
+            Console.Write("Введите Id: "); int id1 = Convert.ToInt32(Console.ReadLine());
+            Thread newSelectByIdThread = new Thread(new ThreadStart(() => {client.SelectById(id1);}));
+            newSelectByIdThread.Start();
+            id++;
+            Console.Write("Введите Имя: "); string name1 = Console.ReadLine();
+            Console.Write("Введите возраст: "); int.TryParse(Console.ReadLine(), out int age1);
+            Console.Write("Введите баланс: "); decimal.TryParse(Console.ReadLine(), out decimal balance1);
+            Thread newInsertThread1 = new Thread(new ThreadStart(() => {client.Insert(id, name1, age1, balance1); }));
+            newInsertThread1.Start();
+            Thread newSelectThread = new Thread(new ThreadStart(() => {client.Select();}));
+            newSelectThread.Start();
+
         }
     }
 }
