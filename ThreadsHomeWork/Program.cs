@@ -20,7 +20,8 @@ namespace ThreadsHomeWork
             Program.clients.Add(new Client(){Id = id, Name = name, Age = age, Balance = balance});
             Program.balances.Add(new Client(){Id = id, Name = name, Age = age, Balance = balance});
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("Успешно добавлен клиент с Id " + id);
+            Console.WriteLine($"Успешно добавлен клиент: {id}\t {name}\t {age}\t {balance}");
+            Console.ForegroundColor = ConsoleColor.White;
         }
         public void Update(int id, decimal balance)
         {
@@ -28,52 +29,90 @@ namespace ThreadsHomeWork
         }
         public void SelectById(int id)
         {
-            for (int i = 0; i < Program.clients.Count; i++)
-            {
-                if (id == Program.clients[i].Id)
-                {
-                    Console.WriteLine(Program.clients[i].Id);
-                    Console.WriteLine(Program.clients[i].Name);
-                    Console.WriteLine(Program.clients[i].Age);
-                    Console.WriteLine(Program.clients[i].Balance); 
-                }
-            }
+            for (int i = 0; i < Program.clients.Count; i++) if (id == Program.clients[i].Id) Console.WriteLine($"{Program.clients[i].Id}\t {Program.clients[i].Name}\t {Program.clients[i].Age}\t {Program.clients[i].Balance}");
         }
         public void Select()
         {
             for (int i = 0; i < Program.clients.Count; i++) Console.WriteLine($"{Program.clients[i].Id},\t {Program.clients[i].Name},\t {Program.clients[i].Age},\t {Program.clients[i].Balance}");
                 
         }
-         public void Delete(int id)
+        public void Delete(int id)
         {
-            for(int i =0; i < Program.clients.Count;i++) if(id == Program.clients[i].Id) Program.clients.RemoveAt(i);
-                
+            for(int i =0; i < Program.clients.Count;i++) if(id == Program.clients[i].Id) Program.clients.RemoveAt(i);   
         }
     }
     class Program
     {
         public static List<Client> clients = new List<Client>();
         public static List<Client> balances = new List<Client>();
-        
-        
         static void Main(string[] args)
         {
-            // Insert
             int id = 0;
             balances.AddRange(clients);
             Client client = new Client();
-            id++;
-            Console.Write("Введите Имя: "); string name = Console.ReadLine();
-            Console.Write("Введите возраст: "); int.TryParse(Console.ReadLine(), out int age);
-            Console.Write("Введите баланс: "); decimal.TryParse(Console.ReadLine(), out decimal balance);
-            Thread newInsertThread = new Thread(new ThreadStart(() => {client.Insert(id, name, age, balance); }));
-            newInsertThread.Start();
-            //Update
-            Console.Write("Введите Id"); int idd = Convert.ToInt32(Console.ReadLine());
-            Console.Write("Введите баланс: ");  decimal ballance = Convert.ToDecimal(Console.ReadLine());
-            Thread newUpdateThread = new Thread(new ThreadStart(() => {client.Update(idd, ballance); }));
-            newUpdateThread.Start();
-            //Select by Id
+            int command = 1;
+            while (command != 0)
+            {
+                Console.WriteLine("Выберите команду:\n1---> Insert,\n2---> Update,\n3---> Select By Id\n4---> Select All\n5---> Delete By Id\n0---> Exit");
+                int.TryParse(Console.ReadLine(), out int chooseCommand);
+                switch (chooseCommand)
+                {
+                    case 1:
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                        Console.WriteLine("Insert");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        id++;
+                        Console.Write("Введите Имя: "); string name = Console.ReadLine();
+                        Console.Write("Введите возраст: "); int.TryParse(Console.ReadLine(), out int age);
+                        Console.Write("Введите баланс: "); decimal.TryParse(Console.ReadLine(), out decimal balance);
+                        Thread newInsertThread = new Thread(new ThreadStart(() => {client.Insert(id, name, age, balance); }));
+                        newInsertThread.Start();
+                        Thread.Sleep(1000);
+                    }
+                    break;
+                    case 2: 
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                        Console.WriteLine("Update");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Write("Введите Id "); int Id = Convert.ToInt32(Console.ReadLine());
+                        Console.Write("Введите баланс: ");  decimal balance = Convert.ToDecimal(Console.ReadLine());
+                        Thread newUpdateThread = new Thread(new ThreadStart(() => {client.Update(Id, balance); }));
+                        newUpdateThread.Start();
+                        Thread.Sleep(1000);
+                    }
+                    break;
+                    case 3:
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                        Console.WriteLine("Select By Id: ");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Write("Введите Id: "); int Id = Convert.ToInt32(Console.ReadLine());
+                        Thread newSelectByIdThread = new Thread(new ThreadStart(() => {client.SelectById(Id);}));
+                        newSelectByIdThread.Start();
+                        Thread.Sleep(1000);
+                    }
+                    break;
+                    c
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+            /*/Select by Id
             Console.Write("Введите Id: "); int id1 = Convert.ToInt32(Console.ReadLine());
             Thread newSelectByIdThread = new Thread(new ThreadStart(() => {client.SelectById(id1);}));
             newSelectByIdThread.Start();
@@ -87,7 +126,7 @@ namespace ThreadsHomeWork
             Console.Write("Введите Id: "); int idf = Convert.ToInt32(Console.ReadLine());
             Thread newDeleteThread = new Thread(new ThreadStart(()=>{client.Delete(idf); }));
             Thread newSelectThread = new Thread(new ThreadStart(() => {client.Select();}));
-            newSelectThread.Start();
+            newSelectThread.Start();*/
 
         }
     }
