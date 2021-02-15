@@ -11,7 +11,7 @@ namespace ThreadsHomeWork
         public string Name {get; set;}
         public int Age {get; set;}
         public decimal Balance {get; set;}
-         public void Insert(int id, string name, int age, decimal balance)
+        public void Insert(int id, string name, int age, decimal balance)
         {
             this.Id = id;
             this.Name = name;
@@ -19,10 +19,13 @@ namespace ThreadsHomeWork
             this.Balance = balance;
             Program.clients.Add(new Client(){Id = id, Name = name, Age = age, Balance = balance});
             Program.balances.Add(new Client(){Id = id, Name = name, Age = age, Balance = balance});
-            System.Console.WriteLine("Успешно добавлено клиент с Id " + id);
-            return;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Успешно добавлен клиент с Id " + id);
         }
-
+        public void Update(int id, decimal balance)
+        {
+            for (int i = 0; i < Program.clients.Count; i++) if (id == Program.clients[i].Id) Program.clients[i].Balance = balance; 
+        }
     }
     class Program
     {
@@ -32,6 +35,7 @@ namespace ThreadsHomeWork
         
         static void Main(string[] args)
         {
+            // Insert
             int id = 0;
             balances.AddRange(clients);
             Client client = new Client();
@@ -41,6 +45,11 @@ namespace ThreadsHomeWork
             Console.Write("Введите баланс: "); decimal.TryParse(Console.ReadLine(), out decimal balance);
             Thread newInsertThread = new Thread(new ThreadStart(() => {client.Insert(id, name, age, balance); }));
             newInsertThread.Start();
+            Console.Write("Введите Id"); int idd = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Введите баланс: ");  decimal ballance = Convert.ToDecimal(Console.ReadLine());
+            Thread newUpdateThread = new Thread(new ThreadStart(() => {client.Update(idd, ballance); }));
+            newUpdateThread.Start();
+            
         }
     }
 }
