@@ -56,6 +56,8 @@ namespace ThreadsHomeWork
             int command = 1;
             while (command != 0)
             {
+                TimerCallback callback = new TimerCallback(ShowChangeInBalance);
+                Timer timer = new Timer(callback, clients, 0, 1000);
                 Console.WriteLine("Выберите команду:\n1---> Insert,\n2---> Update,\n3---> Select By Id\n4---> Select All\n5---> Delete By Id\n0---> Exit");
                 int.TryParse(Console.ReadLine(), out int chooseCommand);
                 switch (chooseCommand)
@@ -133,6 +135,31 @@ namespace ThreadsHomeWork
                         Console.ForegroundColor = ConsoleColor.White;
                     }
                     break;
+                }
+            }
+            static void ShowChangeInBalance(object obj)
+            {
+                for (int i = 0; i < clients.Count; i++)
+                {
+                    if (clients[i].Balance != balances[i].Balance)
+                    {
+                        if (clients[i].Balance <= balances[i].Balance) 
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine($"Баланс до уменьшения: {balances[i].Balance}");
+                            Console.WriteLine($"Баланс после уменьшения: {clients[i].Balance}");
+                            Console.WriteLine($"Разница: - {clients[i].Balance - balances[i].Balance}");
+                        }
+                        else 
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine($"Баланс до увеличения: {balances[i].Balance}");
+                            Console.WriteLine($"Баланс после увеличения: {clients[i].Balance}");
+                            Console.WriteLine($"Разница: + {clients[i].Balance - balances[i].Balance}");
+                        }   
+                        balances[i].Balance = clients[i].Balance;
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
                 }
             }
         }
