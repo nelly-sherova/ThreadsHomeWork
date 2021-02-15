@@ -44,6 +44,11 @@ namespace ThreadsHomeWork
             for (int i = 0; i < Program.clients.Count; i++) Console.WriteLine($"{Program.clients[i].Id},\t {Program.clients[i].Name},\t {Program.clients[i].Age},\t {Program.clients[i].Balance}");
                 
         }
+         public void Delete(int id)
+        {
+            for(int i =0; i < Program.clients.Count;i++) if(id == Program.clients[i].Id) Program.clients.RemoveAt(i);
+                
+        }
     }
     class Program
     {
@@ -78,6 +83,9 @@ namespace ThreadsHomeWork
             Console.Write("Введите баланс: "); decimal.TryParse(Console.ReadLine(), out decimal balance1);
             Thread newInsertThread1 = new Thread(new ThreadStart(() => {client.Insert(id, name1, age1, balance1); }));
             newInsertThread1.Start();
+            
+            Console.Write("Введите Id: "); int idf = Convert.ToInt32(Console.ReadLine());
+            Thread newDeleteThread = new Thread(new ThreadStart(()=>{client.Delete(idf); }));
             Thread newSelectThread = new Thread(new ThreadStart(() => {client.Select();}));
             newSelectThread.Start();
 
